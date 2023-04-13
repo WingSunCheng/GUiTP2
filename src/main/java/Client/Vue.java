@@ -7,9 +7,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -17,6 +16,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import server.models.Course;
+
+import java.io.IOException;
 
 public class Vue extends Application {
     Course chosenClass;
@@ -93,8 +94,80 @@ public class Vue extends Application {
             root.getChildren().add(inscriptionForm);
             inscriptionForm.setLayoutX(310);
             inscriptionForm.setLayoutY(15);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+
+
+			//INSCRIPTION TITLE
+			Text inscriptionTitre = new Text("Formulaire d'inscription");
+			root.getChildren().add(inscriptionTitre);
+			inscriptionTitre.setFont(Font.font("serif",18));
+			inscriptionTitre.setLayoutX(360);
+			inscriptionTitre.setLayoutY(25);
+
+			//THIS IS COURS TABLE TO SHOW USER USING TABLEVIEW
+			TableView<Course> choixDeCours = new TableView<>();
+			TableColumn<Course, String> codeCol = new TableColumn<>("Code");
+			TableColumn<Course, String> coursCol = new TableColumn<>("Cours");
+			choixDeCours.getColumns().addAll(codeCol,coursCol);
+			choixDeCours.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+			choixDeCours.setLayoutX(25);
+			choixDeCours.setLayoutY(30);
+			codeCol.setCellValueFactory(new PropertyValueFactory<>("code"));
+			coursCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+			root.getChildren().add(choixDeCours);
+
+
+			//CHARGER BUTTON ACTION
+			charge.setOnAction((action) -> {
+				try {
+					controleur.charger(lesSessions.getValue());
+					ObservableList<Course> courses = FXCollections.observableArrayList(controleur.getCourses());
+					choixDeCours.setItems(courses);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+
+			//TABLE VIEW ACTION WHEN USER SELECT A CLASS
+			choixDeCours.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				if (newSelection != null) {
+					String selectedName = newSelection.getName();
+					String selectedCode = newSelection.getCode();
+					System.out.println("Selected class: " + selectedName + ", " + selectedCode);
+					for (int i = 0; i < controleur.getCourses().size(); i++) {
+						if (controleur.getCourses().get(i).getCode().equals(selectedCode)){
+							this.chosenClass = controleur.getCourses().get(i);
+						}
+					}
+				}
+			});
+
+			//ENVOYER BUTTON ACTION
+			envoyer.setOnAction((action) -> {
+				try{
+					String prenom = prenom1.getText();
+					String nom = nom1.getText();
+					String email = email1.getText();
+					String matricule = matricule1.getText();
+					System.out.println(controleur.getCourses());
+					System.out.println(chosenClass);
+					System.out.println(prenom);
+					System.out.println(nom);
+
+					controleur.inscripting(prenom,nom,email,matricule,this.chosenClass);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			});
+			stage.setTitle("Inscription UdeM");
+			stage.setScene(scene);
+			stage.show();
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+	public static void main(String[] args){
+		launch(args);
+	}
 }
