@@ -37,7 +37,7 @@ public class Vue extends Application {
 
 		Controleur controleur = new Controleur(new Modele());try {
 
-			//MAIN WINDOW
+			//Fenêtre principale
 			Pane root = new Pane();
 			Scene scene = new Scene(root, 600, 500);
 			root.setStyle("-fx-background-color: #f5f5dc;");
@@ -47,7 +47,7 @@ public class Vue extends Application {
 			mainSeperator.setLayoutX(root.getWidth() / 2);
 			mainSeperator.setPrefHeight(root.getHeight());
 
-			//BOTTOM BOX FOR BUTTONS
+			//Boîte en bas pour les boutons
 			HBox bottomBox = new HBox();
 			bottomBox.setPrefHeight(50);
 			bottomBox.setPrefWidth(280);
@@ -64,14 +64,14 @@ public class Vue extends Application {
 			Button charge = new Button("Charger");
 			bottomBox.getChildren().addAll(lesSessions, charge);
 
-			//TITLE FOR TABLE VIEW
+			//Titre pour tableView
 			Text tableViewTitle = new Text("Liste de cours");
 			root.getChildren().add(tableViewTitle);
 			tableViewTitle.setFont(Font.font("serif", 18));
 			tableViewTitle.setLayoutX(95);
 			tableViewTitle.setLayoutY(25);
 
-			//GRIDPANE FOR INSCRIPTION
+			//GridPane pour inscription
 			GridPane inscriptionForm = new GridPane();
 			Text text1 = new Text("Prénom");
 			Text text2 = new Text("Nom");
@@ -86,7 +86,7 @@ public class Vue extends Application {
 
 			Button envoyer = new Button("Envoyer");
 
-			//GRIDPANE INSCRIPTION LAYOUT
+			//GridPane mise en page pour inscription
 			inscriptionForm.setMinSize(250, 300);
 			inscriptionForm.setPadding(new Insets(10, 10, 10, 10));
 			inscriptionForm.setHgap(10);
@@ -106,14 +106,14 @@ public class Vue extends Application {
 			inscriptionForm.setLayoutY(15);
 
 
-			//INSCRIPTION TITLE
+			//Le titre d'inscription
 			Text inscriptionTitre = new Text("Formulaire d'inscription");
 			root.getChildren().add(inscriptionTitre);
 			inscriptionTitre.setFont(Font.font("serif",18));
 			inscriptionTitre.setLayoutX(360);
 			inscriptionTitre.setLayoutY(25);
 
-			//THIS IS COURS TABLE TO SHOW USER USING TABLEVIEW
+			//Ceci est une table de cours pour montrer l'utilisateur utilisant TableView
 			TableView<Course> choixDeCours = new TableView<>();
 			TableColumn<Course, String> codeCol = new TableColumn<>("Code");
 			TableColumn<Course, String> coursCol = new TableColumn<>("Cours");
@@ -126,7 +126,7 @@ public class Vue extends Application {
 			root.getChildren().add(choixDeCours);
 
 
-			//CHARGER BUTTON ACTION
+			//Charger l'action du bouton
 			/**
 			 * Gestionnaire d'événement pour le bouton charge qui appellera la méthode du controleur : charger
 			 * Cela définira les données de la table TableView (choixDeCours) avec les cours de la session sélectionnée.
@@ -144,7 +144,7 @@ public class Vue extends Application {
 				}
 			});
 
-			//TABLE VIEW ACTION WHEN USER SELECT A CLASS
+			//Action tableVue lorsque l'utilisateur sélectionne une classe.
 			choixDeCours.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 				if (newSelection != null) {
 					String selectedName = newSelection.getName();
@@ -158,7 +158,7 @@ public class Vue extends Application {
 				}
 			});
 
-			//ENVOYER BUTTON ACTION
+			//Envoyer l'action du bouton.
 			/**
 			 * Gestionnaire d'événement pour le bouton envoyer qui appellera la méthode du controleur : inscripting.
 			 * Cela permettra à l'utilisateur d'envoyer les informations écrites dans le GridPane (inscriptionForm).

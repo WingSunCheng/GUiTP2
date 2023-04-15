@@ -110,7 +110,7 @@ public class Modele {
             }
             try {
                 validMatricule = true;
-                if (matricule.length() != 8) {
+                if (matricule.length() != 6) {
                     validMatricule = false;
                 }
                 if (validMatricule == false){
@@ -118,7 +118,7 @@ public class Modele {
                 }
 
             } catch (Exception e) {
-                errorWindows("Invalid Matricule","Wrong matricule (8 numbers)!");
+                errorWindows("Invalid Matricule","Wrong matricule (6 numbers)!");
             }
             try {
                 validCode = true;
