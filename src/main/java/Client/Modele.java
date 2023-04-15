@@ -9,7 +9,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import server.models.Course;
 import server.models.RegistrationForm;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,13 +16,30 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+/**
+ * Cette classe Modele est la logique derrière le programme. Il donne la fonctionnalité à l'interface utilisateur graphique
+ * pour voir les cours disponibles et pour s'inscrire aux cours.
+ */
+
 public class Modele {
     ArrayList<Course> course = new ArrayList<>();
 
+    /**
+     * Cette méthode obtient les cours
+     * <p>
+     * @return ArrayList Course
+     */
     public ArrayList<Course> getCourse() {
         return course;
     }
 
+    /**
+     * This method will get the available courses depending on the session chosen from the server.
+     *
+     *<p>
+     * @param session String session to get available courses
+     * @throws IOException error while sending and receiving information to the server
+     */
     public void getCourses(String session) throws IOException {
 
         //ArrayList<Course> course = new ArrayList<>();
@@ -60,11 +76,19 @@ public class Modele {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
         }
     }
 
+    /**
+     * This will register a user into a chosen course, but it will also verify the information written by the user
+     * to make sure it is compatible before sending it to the server
+     * <p>
+     * @param prenom prenom de l'utilisateur
+     * @param nom nom de l'utilisateur
+     * @param email email de l'utilisateur
+     * @param matricule matricule de l'utilisateur
+     * @param chosenClass class chosis de l'utilisateur
+     */
     public void getInscription(String prenom, String nom, String email, String matricule,Course chosenClass) {
         try {
             Socket BONJOUR = new Socket("127.0.0.1", 1337);
@@ -139,6 +163,14 @@ public class Modele {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * This will create an error window when the user sends the wrong information with a title and a message
+     * indicating the error
+     * <p>
+     * @param title title of the error window
+     * @param message message of the error window
+     */
     public void errorWindows(String title,String message){
         Stage errorWindow = new Stage();
         Pane r2 = new Pane();
