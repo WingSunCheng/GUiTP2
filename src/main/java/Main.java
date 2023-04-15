@@ -6,7 +6,7 @@ public class Main {
 	 * sans avoir à ajouter la bibliothèque javaFx lors de l'exécution en ligne de commande
 	 *
 	 * @param args argument de ligne de commande mais est ignoré,uniquement utilisé
-	 *                pour pouvoir appeler la méthode main depuis Vue, pour lancer l'application
+	 * 	pour pouvoir appeler la méthode main depuis Vue, pour lancer l'application
 	 */
 	public static void main(String[] args) {
 		Vue.main(args);
