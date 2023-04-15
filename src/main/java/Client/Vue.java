@@ -19,24 +19,13 @@ import server.models.Course;
 
 import java.io.IOException;
 
-/**
- * Cette classe s'agit d'une application javaFx qui crée une interface graphique permettant à l'utilisateur de s'inscrire à un cours.
- */
 public class Vue extends Application {
     Course chosenClass;
-	/**
-	 * La méthode start crée une interface utilisateur graphique. Il y a un tableau TableView
-	 * avec les cours disponibles en fonction de la session choisie par l'utilisateur dans la boîte de choix.
-	 * Il y a également un GridPane 'formulaire d'inscription' qui permet à l'utilisateur d'insérer
-	 * ses informations et un Bouton 'envoyer' pour envoyer au serveur les informations et s'inscrire à un cours.
-	 * <p>
-	 * @param stage fenêtre principale de l'interface graphique
-	 */
-
-	@Override
-    public void start(Stage stage){
+    @Override
+    public void start(Stage stage) throws Exception {
 
         Controleur controleur = new Controleur(new Modele());
+        try {
 
             //MAIN WINDOW
             Pane root = new Pane();
@@ -59,8 +48,6 @@ public class Vue extends Application {
             bottomBox.setLayoutY(440);
             bottomBox.setStyle("-fx-background-color: #FFFFFF;");
 
-			//ChoiceBox 'lesSessions' for the user to choose the session
-			//Button charge for user to see the available courses
             ObservableList<String> session = FXCollections.observableArrayList("Automne", "Hiver", "Ete");
             ChoiceBox<String> lesSessions = new ChoiceBox<>(session);
             lesSessions.setValue(session.get(0));
@@ -80,6 +67,7 @@ public class Vue extends Application {
             Text text2 = new Text("Nom");
             Text text3 = new Text("Email");
             Text text4 = new Text("Matricule");
+
 
             javafx.scene.control.TextField prenom1 = new javafx.scene.control.TextField();
             javafx.scene.control.TextField nom1 = new javafx.scene.control.TextField();
@@ -127,14 +115,8 @@ public class Vue extends Application {
 			coursCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 			root.getChildren().add(choixDeCours);
 
-		//CHARGER BUTTON ACTION
-		/**
-		 * Gestionnaire d'événement pour le bouton charge qui appellera la méthode du controleur : charger
-		 * Cela définira les données de la table TableView (choixDeCours) avec les cours de la session sélectionnée.
-		 *<p>
-		 * @param  Action lorsque l'utilisateur appuie sur le bouton "charger"
-		 * @throws Erreur RuntimeException lors de l'appel de la méthode depuis controleur:charger
-		 */
+
+			//CHARGER BUTTON ACTION
 			charge.setOnAction((action) -> {
 				try {
 					controleur.charger(lesSessions.getValue());
@@ -160,13 +142,6 @@ public class Vue extends Application {
 			});
 
 			//ENVOYER BUTTON ACTION
-		/**
-		 * Gestionnaire d'événement pour le bouton envoyer qui appellera la méthode du controleur : inscripting.
-		 * Cela permettra à l'utilisateur d'envoyer les informations écrites dans le GridPane (inscriptionForm).
-		 *<p>
-		 * @param  Action lorsque l'utilisateur appuie sur le bouton
-		 * @throws Erreur RuntimeException lors de l'appel de la méthode controleur : inscripting
-		 */
 			envoyer.setOnAction((action) -> {
 				try{
 					String prenom = prenom1.getText();
@@ -183,17 +158,15 @@ public class Vue extends Application {
 					throw new RuntimeException(e);
 				}
 			});
-
 			stage.setTitle("Inscription UdeM");
 			stage.setScene(scene);
 			stage.show();
-	}
 
-	/**
-	 * Cela initialise l'interface javaFx et démarre l'application pour l'utilisateur
-	 *<p>
-	 * @param args argument de ligne de commande mais il est ignoré dans cette méthode
-	 */
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+	}
 	public static void main(String[] args){
 		launch(args);
 	}
