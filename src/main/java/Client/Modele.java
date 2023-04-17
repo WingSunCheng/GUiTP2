@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+
 /**
  * Cette classe Modele est la logique derrière le programme. Il donne la fonctionnalité à l'interface utilisateur graphique
  * pour voir les cours disponibles et pour s'inscrire aux cours.
@@ -91,10 +92,10 @@ public class Modele {
      */
     public void getInscription(String prenom, String nom, String email, String matricule,Course chosenClass) {
         try {
-            Socket BONJOUR = new Socket("127.0.0.1", 1337);
-            ObjectOutputStream BYEBYE = new ObjectOutputStream(BONJOUR.getOutputStream());
-            BYEBYE.writeObject("INSCRIRE");
-            BYEBYE.flush();
+            Socket socket = new Socket("127.0.0.1", 1337);
+            ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
+            outStream.writeObject("INSCRIRE");
+            outStream.flush();
             boolean validEmail = true;
             boolean validMatricule = true;
             boolean validCode = true;
@@ -110,7 +111,7 @@ public class Modele {
             }
             try {
                 validMatricule = true;
-                if (matricule.length() != 8) {
+                if (matricule.length() != 6) {
                     validMatricule = false;
                 }
                 if (validMatricule == false){
@@ -118,7 +119,7 @@ public class Modele {
                 }
 
             } catch (Exception e) {
-                errorWindows("Invalid Matricule","Wrong matricule (8 numbers)!");
+                errorWindows("Invalid Matricule","Wrong matricule (6 numbers)!");
             }
             try {
                 validCode = true;
@@ -134,25 +135,25 @@ public class Modele {
 
             if(!((validCode == false) || (validMatricule == false) || (validEmail == false))) {
                 RegistrationForm ins = new RegistrationForm(prenom, nom, email, matricule, chosenClass);
-                Socket kek = new Socket("127.0.0.1", 1337);
-                ObjectOutputStream kik = new ObjectOutputStream(kek.getOutputStream());
+                Socket socket2 = new Socket("127.0.0.1", 1337);
+                ObjectOutputStream outStream2 = new ObjectOutputStream(socket2.getOutputStream());
                 System.out.println(ins);
-                kik.writeObject(ins);
-                kik.flush();
+                outStream2.writeObject(ins);
+                outStream2.flush();
 
                 Stage INSCRIT = new Stage();
-                Pane nice = new Pane();
-                Scene nice2 = new Scene(nice, 480, 200);
+                Pane pane = new Pane();
+                Scene pane2 = new Scene(pane, 480, 200);
                 Text txt = new Text("Félicitations, vous etes inscrit(e) avec succès au cours: " + chosenClass.getCode());
                 txt.setFont(Font.font("serif", 18));
                 txt.setLayoutX(10);
                 txt.setLayoutY(100);
-                nice.getChildren().add(txt);
-                INSCRIT.setScene(nice2);
+                pane.getChildren().add(txt);
+                INSCRIT.setScene(pane2);
                 INSCRIT.setTitle("GOODJOB");
                 INSCRIT.show();
                 System.out.println("BYE");
-                kek.close();
+                socket2.close();
             }
             else {
                 return;
